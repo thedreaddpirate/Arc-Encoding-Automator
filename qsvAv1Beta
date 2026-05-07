@@ -578,7 +578,9 @@ generateFilterParameters () {
 
 	# ffmpeg to detect black bars for cropping.
 	if [ ${duration} -lt 1811 ]; then
-		midPoint=$(awk "BEGIN{print (${duration} / 2)}")
+		midPoint1=$(awk "BEGIN{print (${duration} / 4)}")
+		midPoint2=$(awk "BEGIN{print (${duration} / 3)}")
+		midPoint3=$(awk "BEGIN{print (${duration} / 2)}")
 		endPoint=$(awk "BEGIN{print (${duration} - 10)}") 
 	else
 		midPoint=300
@@ -586,32 +588,42 @@ generateFilterParameters () {
 	fi
 
 	rawCrop1=$(${ffmpeg} -nostdin -ss 0 -t 10 -i "${inputFile}" -vf fps=1/2,cropdetect=mode=black:reset=50,metadata=mode=print -f null - 2>&1 | awk '/crop=/ {a=$NF} END{print a}' | awk -F '=' '{print $2}')
-	rawCrop2=$(${ffmpeg} -nostdin -ss ${midPoint} -t 10 -i "${inputFile}" -vf fps=1/2,cropdetect=mode=black:reset=50,metadata=mode=print -f null - 2>&1 | awk '/crop=/ {a=$NF} END{print a}' | awk -F '=' '{print $2}')
+	rawCrop2=$(${ffmpeg} -nostdin -ss ${midPoint1} -t 10 -i "${inputFile}" -vf fps=1/2,cropdetect=mode=black:reset=50,metadata=mode=print -f null - 2>&1 | awk '/crop=/ {a=$NF} END{print a}' | awk -F '=' '{print $2}')
+	rawCrop3=$(${ffmpeg} -nostdin -ss ${midPoint2} -t 10 -i "${inputFile}" -vf fps=1/2,cropdetect=mode=black:reset=50,metadata=mode=print -f null - 2>&1 | awk '/crop=/ {a=$NF} END{print a}' | awk -F '=' '{print $2}')
+	rawCrop4=$(${ffmpeg} -nostdin -ss ${midPoint3} -t 10 -i "${inputFile}" -vf fps=1/2,cropdetect=mode=black:reset=50,metadata=mode=print -f null - 2>&1 | awk '/crop=/ {a=$NF} END{print a}' | awk -F '=' '{print $2}')
 	rawCrop3=$(${ffmpeg} -nostdin -ss ${endPoint} -t 10 -i "${inputFile}" -vf fps=1/2,cropdetect=mode=black:reset=50,metadata=mode=print -f null - 2>&1 | awk '/crop=/ {a=$NF} END{print a}' | awk -F '=' '{print $2}')
 
 	IFS=$'\n'
 	w1=$(echo ${rawCrop1} | awk -F ":" '{print $1}')
 	w2=$(echo ${rawCrop2} | awk -F ":" '{print $1}')
 	w3=$(echo ${rawCrop3} | awk -F ":" '{print $1}')
-	wSort=(${w1} ${w2} ${w3})
+	w4=$(echo ${rawCrop4} | awk -F ":" '{print $1}')
+	w5=$(echo ${rawCrop5} | awk -F ":" '{print $1}')
+	wSort=(${w1} ${w2} ${w3} ${w4} ${w5})
 	w=$(echo "${wSort[*]}" | sort -nr | head -n1)
 
 	h1=$(echo ${rawCrop1} | awk -F ":" '{print $2}')
 	h2=$(echo ${rawCrop2} | awk -F ":" '{print $2}')
 	h3=$(echo ${rawCrop3} | awk -F ":" '{print $2}')
-	hSort=(${h1} ${h2} ${h3})
+	h4=$(echo ${rawCrop4} | awk -F ":" '{print $2}')
+	h5=$(echo ${rawCrop5} | awk -F ":" '{print $2}')
+	hSort=(${h1} ${h2} ${h3} ${h4} ${h5})
 	h=$(echo "${hSort[*]}" | sort -nr | head -n1)
 
 	x1=$(echo ${rawCrop1} | awk -F ":" '{print $3}')
 	x2=$(echo ${rawCrop2} | awk -F ":" '{print $3}')
 	x3=$(echo ${rawCrop3} | awk -F ":" '{print $3}')
-	xSort=(${x1} ${x2} ${x3})
+	x4=$(echo ${rawCrop4} | awk -F ":" '{print $3}')
+	x5=$(echo ${rawCrop5} | awk -F ":" '{print $3}')
+	xSort=(${x1} ${x2} ${x3} ${x4} ${x5})
 	x=$(echo "${xSort[*]}" | sort -n | head -n1)
 
 	y1=$(echo ${rawCrop1} | awk -F ":" '{print $4}')
 	y2=$(echo ${rawCrop2} | awk -F ":" '{print $4}')
 	y3=$(echo ${rawCrop3} | awk -F ":" '{print $4}')
-	ySort=(${y1} ${y2} ${y3})
+	y4=$(echo ${rawCrop4} | awk -F ":" '{print $4}')
+	y5=$(echo ${rawCrop5} | awk -F ":" '{print $4}')
+	ySort=(${y1} ${y2} ${y3} ${y4} ${y5})
 	y=$(echo "${ySort[*]}" | sort -n | head -n1)
 
 	IFS=$' \t\n'
