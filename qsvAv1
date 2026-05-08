@@ -577,15 +577,10 @@ generateFilterParameters () {
 	esac
 
 	# ffmpeg to detect black bars for cropping.
-	if [ ${duration} -lt 1811 ]; then
-		midPoint1=$(awk "BEGIN{print (${duration} / 4)}")
-		midPoint2=$(awk "BEGIN{print (${duration} / 3)}")
-		midPoint3=$(awk "BEGIN{print (${duration} / 2)}")
-		endPoint=$(awk "BEGIN{print (${duration} - 10)}") 
-	else
-		midPoint=300
-		endPoint=1800
-	fi
+	midPoint1=$(awk "BEGIN{print (${duration} / 4)}")
+	midPoint2=$(awk "BEGIN{print (${duration} / 3)}")
+	midPoint3=$(awk "BEGIN{print (${duration} / 2)}")
+	endPoint=$(awk "BEGIN{print (${duration} - 11)}") 
 
 	rawCrop1=$(${ffmpeg} -nostdin -ss 0 -t 10 -i "${inputFile}" -vf fps=1/2,cropdetect=mode=black:reset=50,metadata=mode=print -f null - 2>&1 | awk '/crop=/ {a=$NF} END{print a}' | awk -F '=' '{print $2}')
 	rawCrop2=$(${ffmpeg} -nostdin -ss ${midPoint1} -t 10 -i "${inputFile}" -vf fps=1/2,cropdetect=mode=black:reset=50,metadata=mode=print -f null - 2>&1 | awk '/crop=/ {a=$NF} END{print a}' | awk -F '=' '{print $2}')
