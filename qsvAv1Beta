@@ -526,11 +526,11 @@ generateFilters () {
 	else
 		deinterlace=""
 	fi
-    if [ ${x} -eq 0 ] && [ ${y} -eq 0 ]; then
-        crop=""
-    else
-        crop="vpp_qsv=cw=${w}:ch=${h}:cx=${x}:cy=${y}:scale_mode=5,"
-    fi
+	if [ ${x} -eq 0 ] && [ ${y} -eq 0 ]; then
+		crop=""
+	else
+		crop="vpp_qsv=cw=${w}:ch=${h}:cx=${x}:cy=${y}:scale_mode=5,"
+	fi
 	if [ ${setScale} -eq 1 ]; then 
 		scale="scale_qsv=w=${w_scale}:h=${h}:mode=hq:format=p010le"
 	else
@@ -842,8 +842,10 @@ initialRemux () {
 	echo "Checking for attached images"
 	imageProbe=$(${ffprobe} -i "${INPUTFILE}" -select_streams v -show_entries stream -v quiet -of json | jq '.streams[] | select(.tags.mimetype | select (. != null) | contains("image")) | .index')
 	removeImage=""
-	if [ ! -z ${imageProbe} ]; then
-		removeImage=" -map -0:${imageProbe}"
+	if [ ! -z "${imageProbe}" ]; then
+		while read image; do
+			removeImage="${removeImage} -map -0:${image}"
+		done <<< "$(echo -e "${imageProbe}")"
 	fi
 	echo "Remuxing file to re-order tracks"
 	if [[ "${ext}" == "avi" ]] || [[ "${ext}" == "mpg" ]] || [[ "${ext}" == "mp4" ]] || [[ "${ext}" == "m2ts" ]] || [ "${NOEIA608}" = 'false' ]; then
