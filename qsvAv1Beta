@@ -993,7 +993,7 @@ if [ "${UNTAGGEDSUBJSON}" = 'true' ]; then
 		SELECTEDSUBS=$(jq -r '[.streams[]]' <<< "${SUBFFPROBE}")
 	fi
 else
-	SELECTEDSUBS=$(jq -r '[.streams[] | select(.tags.language == ("eng") or .tags.language == ("zxx") or .tags.language == ("enm"))]' <<< "${SUBFFPROBE}")
+	SELECTEDSUBS=$(jq -r '[.streams[] | select(.tags.language == ("eng") or .tags.language == ("zxx") or .tags.language == ("enm"))  | select(.tags.NUMBER_OF_BYTES != ("0")) | select (.tags.DURATION != ("00:00:00.000000000"))]' <<< "${SUBFFPROBE}")
 	EMPTYSELECTEDSUBJSON=$(jq -e '.[] | length == 0' <<< "${SELECTEDSUBS}")
 	if [ "${EMPTYSELECTEDSUBJSON}" = 'true' ]; then
 		# Have occasionally encountered media where the English track is labeled "jpn", possibly to appease aubtitle selection logic for a particular media player
