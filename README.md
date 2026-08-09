@@ -3,11 +3,11 @@ Automates media encoding to AV1, including handling language selection, converti
 
 ## Additional functions:
 
-- - Subtitles with zero size and duration will be removed
-- - Unused fonts for ASS subtitles will be removed
-- - Attached images will be removed
-- - EIA-608 closed caption subtitles are extracted and converted to SRT
-- - Fixes chapters that start/end after the end of the video
+- Subtitles with zero size and duration will be removed
+- Unused fonts for ASS subtitles will be removed
+- Attached images will be removed
+- EIA-608 closed caption subtitles are extracted and converted to SRT
+- Fixes chapters that start/end after the end of the video
 
 # Requirements
 - Linux kernel 6.2+.
