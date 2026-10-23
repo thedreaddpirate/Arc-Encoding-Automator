@@ -1,0 +1,1103 @@
+{
+  "_id": "ArcAV1_v21",
+  "name": "AV1 Intel Arc QSV [Dual-Audio E-AC3/AAC, Subtitle Normalizer & Unified AV1 v21]",
+  "description": "AV1 Intel Arc QSV [Dual-Audio E-AC3/AAC, Subtitle Normalizer & Unified AV1 v21]",
+  "tags": "",
+  "flowPlugins": [
+    {
+      "name": "Remove Unsupported Streams",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "2.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_00td_action_remove_stream_by_specified_property",
+        "propertyToCheck": "CodecID",
+        "valuesToRemove": "S_TEXT/WEBVTT,mov_text,tx3g"
+      },
+      "fpEnabled": true,
+      "id": "dropBrokenSubs",
+      "position": {
+        "x": 1524,
+        "y": -460
+      }
+    },
+    {
+      "name": "Check Channel Count 8",
+      "sourceRepo": "Community",
+      "pluginName": "checkChannelCount",
+      "version": "1.0.0",
+      "inputsDB": {
+        "channelCount": "8"
+      },
+      "fpEnabled": true,
+      "id": "MtnEIKwAT",
+      "position": {
+        "x": 1392,
+        "y": -336
+      }
+    },
+    {
+      "name": "remux",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "2.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_MC93_Migz1Remux",
+        "force_conform": "true",
+        "container": "mkv"
+      },
+      "fpEnabled": true,
+      "id": "XneJMBTXQ",
+      "position": {
+        "x": 1392,
+        "y": -372
+      }
+    },
+    {
+      "name": "Replace Original File",
+      "sourceRepo": "Community",
+      "pluginName": "replaceOriginalFile",
+      "version": "1.0.0",
+      "fpEnabled": true,
+      "id": "kr68epn5l",
+      "position": {
+        "x": 1176,
+        "y": 84
+      }
+    },
+    {
+      "name": "Compare File Size Ratio (Remux: Corrupt Guard Only)",
+      "sourceRepo": "Community",
+      "pluginName": "compareFileSizeRatio",
+      "version": "2.0.0",
+      "inputsDB": {
+        "greaterThan": "5",
+        "lessThan": "9999"
+      },
+      "fpEnabled": true,
+      "id": "pu9XETsdY",
+      "position": {
+        "x": 1392,
+        "y": 60
+      }
+    },
+    {
+      "name": "Pre - processing",
+      "sourceRepo": "Community",
+      "pluginName": "comment",
+      "version": "1.0.0",
+      "fpEnabled": true,
+      "id": "FfO8ji8Mm",
+      "position": {
+        "x": 1524,
+        "y": -516
+      }
+    },
+    {
+      "name": "remove datastreams",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "2.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_vdka_Remove_DataStreams"
+      },
+      "fpEnabled": true,
+      "id": "dA_-tC25r",
+      "position": {
+        "x": 1392,
+        "y": -132
+      }
+    },
+    {
+      "name": "Clean Audio",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "2.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_MC93_Migz3CleanAudio",
+        "language": "eng,und,jpn,zho,chi,ita,spa"
+      },
+      "fpEnabled": true,
+      "id": "YLKhB7Ofm",
+      "position": {
+        "x": 1392,
+        "y": -240
+      }
+    },
+    {
+      "name": "Clean Subtitles",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "2.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_MC93_Migz4CleanSubs",
+        "language": "eng,ita,spa,und"
+      },
+      "fpEnabled": true,
+      "id": "rsUnoPt6C",
+      "position": {
+        "x": 1392,
+        "y": -204
+      }
+    },
+    {
+      "name": "Image Removal",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "2.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_MC93_MigzImageRemoval"
+      },
+      "fpEnabled": true,
+      "id": "sD0ocUAtK",
+      "position": {
+        "x": 1392,
+        "y": -168
+      }
+    },
+    {
+      "name": "reorder streams",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "2.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_00td_action_re_order_all_streams_v2"
+      },
+      "fpEnabled": true,
+      "id": "VdondiAXt",
+      "position": {
+        "x": 1392,
+        "y": -312
+      }
+    },
+    {
+      "name": "Standardise Audio Streams (EAC3)",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "2.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_00td_action_standardise_audio_stream_codecs",
+        "audioCodec": "eac3"
+      },
+      "fpEnabled": true,
+      "id": "Kw1n2xZEQ",
+      "position": {
+        "x": 1392,
+        "y": -276
+      }
+    },
+    {
+      "name": "Fail Flow: Encoding failed",
+      "sourceRepo": "Community",
+      "pluginName": "failFlow",
+      "version": "1.0.0",
+      "fpEnabled": true,
+      "id": "YoqEPsDlN",
+      "position": {
+        "x": 2311.5869971972415,
+        "y": 521.2476755811879
+      }
+    },
+    {
+      "name": "Set Quality Variable <=720p",
+      "sourceRepo": "Community",
+      "pluginName": "setFlowVariable",
+      "version": "1.0.0",
+      "inputsDB": {
+        "variable": "qual",
+        "value": "25"
+      },
+      "fpEnabled": true,
+      "id": "tOPfyhMFu",
+      "position": {
+        "x": 1424.5862574816235,
+        "y": 232.4006436031568
+      }
+    },
+    {
+      "name": "Intel (QSV) AV1",
+      "sourceRepo": "Community",
+      "pluginName": "ffmpegCommandCustomArguments",
+      "version": "1.0.0",
+      "inputsDB": {
+        "outputArguments": "-c:a copy {{{args.variables.user.custom_sub_args}}} -vf {{{args.variables.user.qsv_vf}}} -q:v {{{args.variables.user.qual}}} -preset veryslow -look_ahead_depth 40 -extbrc 1 -adaptive_i 1 -adaptive_b 1 -b_strategy 1 -bf 39 -max_muxing_queue_size 2048 -max_interleave_delta 0 -avoid_negative_ts disabled",
+        "inputArguments": "{{{args.variables.user.qsv_in}}}"
+      },
+      "fpEnabled": true,
+      "id": "2mA1B19I3",
+      "position": {
+        "x": 1596,
+        "y": 396
+      }
+    },
+    {
+      "name": "Input File",
+      "sourceRepo": "Community",
+      "pluginName": "inputFile",
+      "version": "1.0.0",
+      "inputsDB": {
+        "fileAccessChecks": "true"
+      },
+      "fpEnabled": true,
+      "id": "y4lqcdrho",
+      "position": {
+        "x": 1524,
+        "y": -564
+      }
+    },
+    {
+      "name": "Check Video Codec",
+      "sourceRepo": "Community",
+      "pluginName": "checkVideoCodec",
+      "version": "1.0.0",
+      "inputsDB": {
+        "codec": "av1"
+      },
+      "fpEnabled": true,
+      "id": "x4UqtuCK9",
+      "position": {
+        "x": 1524,
+        "y": -408
+      }
+    },
+    {
+      "name": "Begin Command",
+      "sourceRepo": "Community",
+      "pluginName": "ffmpegCommandStart",
+      "version": "1.0.0",
+      "fpEnabled": true,
+      "id": "6a0HyfVUa",
+      "position": {
+        "x": 1596,
+        "y": 96
+      }
+    },
+    {
+      "name": "Execute",
+      "sourceRepo": "Community",
+      "pluginName": "ffmpegCommandExecute",
+      "version": "1.0.0",
+      "fpEnabled": true,
+      "id": "OBbLCZ8SO",
+      "position": {
+        "x": 1594.348760305724,
+        "y": 471.4782768382132
+      }
+    },
+    {
+      "name": "Set Video Encoder",
+      "sourceRepo": "Community",
+      "pluginName": "ffmpegCommandSetVideoEncoder",
+      "version": "1.0.0",
+      "inputsDB": {
+        "outputCodec": "av1",
+        "ffmpegPreset": "slower",
+        "hardwareType": "qsv",
+        "ffmpegQuality": "{{{args.variables.user.qual}}}",
+        "hardwareEncoding": "true",
+        "hardwareDecoding": "false",
+        "forceEncoding": "true",
+        "ffmpegPresetEnabled": "false",
+        "ffmpegQualityEnabled": "false"
+      },
+      "fpEnabled": true,
+      "id": "nvhiecc42",
+      "position": {
+        "x": 1594.0332767738364,
+        "y": 353.0832183902439
+      }
+    },
+    {
+      "name": "Set Container",
+      "sourceRepo": "Community",
+      "pluginName": "ffmpegCommandSetContainer",
+      "version": "1.0.0",
+      "inputsDB": {
+        "forceConform": "true",
+        "container": "mkv"
+      },
+      "fpEnabled": true,
+      "id": "5sziHU00e",
+      "position": {
+        "x": 1594.178499471912,
+        "y": 315.726969026839
+      }
+    },
+    {
+      "name": "Replace Original File",
+      "sourceRepo": "Community",
+      "pluginName": "replaceOriginalFile",
+      "version": "1.0.0",
+      "fpEnabled": true,
+      "id": "xG56Of7cp",
+      "position": {
+        "x": 1488,
+        "y": 672
+      }
+    },
+    {
+      "name": "Check Video Resolution",
+      "sourceRepo": "Community",
+      "pluginName": "checkVideoResolution",
+      "version": "1.0.0",
+      "fpEnabled": true,
+      "id": "Fipyujmi9",
+      "position": {
+        "x": 1584.4333172968911,
+        "y": 157.91512719919277
+      }
+    },
+    {
+      "name": "Set Quality Variable 1080p",
+      "sourceRepo": "Community",
+      "pluginName": "setFlowVariable",
+      "version": "1.0.0",
+      "inputsDB": {
+        "variable": "qual",
+        "value": "24"
+      },
+      "fpEnabled": true,
+      "id": "Ez7vZw4ja",
+      "position": {
+        "x": 1594.6524770380247,
+        "y": 232.65523886663792
+      }
+    },
+    {
+      "name": "Set Quality Variable >=1440p",
+      "sourceRepo": "Community",
+      "pluginName": "setFlowVariable",
+      "version": "1.0.0",
+      "inputsDB": {
+        "variable": "qual",
+        "value": "23"
+      },
+      "fpEnabled": true,
+      "id": "_aMYfUDQM",
+      "position": {
+        "x": 1757.1895148219314,
+        "y": 228.5308337195933
+      }
+    },
+    {
+      "name": "Set Original File",
+      "sourceRepo": "Community",
+      "pluginName": "setOriginalFile",
+      "version": "1.0.0",
+      "fpEnabled": true,
+      "id": "wFa2GjtyQ",
+      "position": {
+        "x": 1668,
+        "y": 672
+      }
+    },
+    {
+      "name": "Intel QSV Pipeline",
+      "sourceRepo": "Community",
+      "pluginName": "comment",
+      "version": "1.0.0",
+      "fpEnabled": true,
+      "id": "7C0uwPJUI",
+      "position": {
+        "x": 1596,
+        "y": 48
+      }
+    },
+    {
+      "name": "INTEL QSV COMPATIBILITY & HYBRID ROUTER",
+      "sourceRepo": "Community",
+      "pluginName": "customFunction",
+      "version": "1.0.0",
+      "inputsDB": {
+        "code": "module.exports = async (args) => {\n  const videoStream = args.inputFileObj?.ffProbeData?.streams?.find(s => s.codec_type === 'video');\n\n  const rawPixFmt = (videoStream?.pix_fmt || '').toLowerCase();\n  const pixFmt = rawPixFmt.split('(')[0].trim();\n  const codecName = (videoStream?.codec_name || '').toLowerCase();\n\n  // 4:2:0 pixel formats supported by Intel Arc QSV AV1 hardware encoder\n  const encoderSupportedPixFmts = [\n    'nv12', 'p010', 'p010le', 'yuv420p', 'yuv420p8', 'yuv420p9le',\n    'yuv420p10le', 'yuv420p12le', 'yuv420p16le'\n  ];\n\n  // Formats where Intel Arc lacks hardware decode, requiring CPU software decode -> QSV GPU encode\n  const isH26410bit = (codecName === 'h264' && (pixFmt.includes('10') || videoStream?.bits_per_raw_sample === '10' || videoStream?.bits_per_raw_sample === 10));\n  const isVC1 = (codecName === 'vc1' || codecName === 'wmv3');\n  const isNon420Chroma = pixFmt.includes('444') || pixFmt.includes('422');\n  const needsHybridDecode = isH26410bit || isVC1 || isNon420Chroma;\n\n  const isEncoderCompatible = encoderSupportedPixFmts.includes(pixFmt) || isNon420Chroma;\n\n  if (!args.variables) args.variables = {};\n  if (!args.variables.user) args.variables.user = {};\n\n  let outputNumber = 2;\n\n  if (isEncoderCompatible) {\n    outputNumber = 1;\n    if (isNon420Chroma) {\n      // 4:4:4 or 4:2:2 Chroma -> Downsample in software to 4:2:0 10-bit P010 -> Hardware QSV AV1 Encode\n      args.variables.user.qsv_in = '-qsv_device /dev/dri/renderD129';\n      args.variables.user.qsv_vf = 'format=p010le';\n      args.variables.user.qsv_mode = `Hybrid (${pixFmt} -> 4:2:0 Downsample + Arc QSV AV1 Encode)`;\n    } else if (needsHybridDecode) {\n      // Software CPU Decode -> QSV GPU AV1 Encode (Hi10P or VC-1)\n      args.variables.user.qsv_in = '-qsv_device /dev/dri/renderD129';\n      args.variables.user.qsv_vf = 'format=p010le';\n      args.variables.user.qsv_mode = `Hybrid (CPU Decode [${codecName}] + Arc QSV AV1 Encode)`;\n    } else {\n      // Full Hardware Mode: QSV Decode + QSV AV1 Encode on renderD129\n      args.variables.user.qsv_in = '-hwaccel qsv -qsv_device /dev/dri/renderD129 -hwaccel_output_format qsv -extra_hw_frames 40';\n      args.variables.user.qsv_vf = 'vpp_qsv=format=p010';\n      args.variables.user.qsv_mode = 'Full QSV Hardware (GPU Decode + GPU Encode)';\n    }\n  }\n\n  console.log(`[Custom QSV Router] Codec: ${codecName} | PixFmt: ${pixFmt} | Hybrid: ${needsHybridDecode} | Mode: ${args.variables.user.qsv_mode || 'Incompatible'} -> Output ${outputNumber}`);\n\n  return {\n    outputFileObj: args.inputFileObj,\n    outputNumber: outputNumber,\n    variables: args.variables\n  };\n};"
+      },
+      "fpEnabled": true,
+      "id": "JsxYlOe_E",
+      "position": {
+        "x": 1932,
+        "y": -36
+      }
+    },
+    {
+      "name": "Compare File Size Ratio",
+      "sourceRepo": "Community",
+      "pluginName": "compareFileSizeRatio",
+      "version": "2.0.0",
+      "inputsDB": {
+        "greaterThan": "5",
+        "lessThan": "110"
+      },
+      "fpEnabled": true,
+      "id": "Nb5_A6I_Z",
+      "position": {
+        "x": 1572,
+        "y": 576
+      }
+    },
+    {
+      "name": "🗑️ Delete Corrupt Original File (<5%)",
+      "sourceRepo": "Community",
+      "pluginName": "deleteFile",
+      "version": "1.0.0",
+      "inputsDB": {
+        "deleteParentFolderIfEmpty": "false",
+        "fileToDelete": "originalFile"
+      },
+      "fpEnabled": true,
+      "id": "SUlM1CMw_",
+      "position": {
+        "x": 1572,
+        "y": 708
+      }
+    },
+    {
+      "name": "🔔 Discord Notification: Transcode Success",
+      "sourceRepo": "Community",
+      "pluginName": "customFunction",
+      "version": "1.0.0",
+      "inputsDB": {
+        "code": "module.exports = async (args) => {\n  const https = require(\"https\");\n  const webhookUrl = \"https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN\";\n\n  const formatSize = (mb) => {\n    if (mb === undefined || mb === null || isNaN(mb)) return \"0 MB\";\n    const abs = Math.abs(mb);\n    if (abs >= 1024) return (abs / 1024).toFixed(2) + \" GB (\" + abs.toFixed(0) + \" MB)\";\n    return abs.toFixed(2) + \" MB\";\n  };\n\n  const formatDuration = (ms) => {\n    if (!ms || ms < 0) return \"0s\";\n    const totalSec = Math.max(1, Math.round(ms / 1000));\n    const h = Math.floor(totalSec / 3600);\n    const m = Math.floor((totalSec % 3600) / 60);\n    const s = totalSec % 60;\n    if (h > 0) return `${h}h ${m}m ${s}s`;\n    if (m > 0) return `${m}m ${s}s`;\n    return `${s}s`;\n  };\n\n  const flowStartTs = args.variables?.user?.flow_start_ts || args.originalLibraryFile?.createdAt || Date.now();\n  const totalFlowMs = Date.now() - flowStartTs;\n\n  const transcodeStartTs = args.variables?.user?.transcode_start_ts;\n  const transcodeEndTs = args.variables?.user?.transcode_end_ts;\n\n  const vStream = args.originalLibraryFile?.ffProbeData?.streams?.find(s => s.codec_type === \"video\");\n  const totalFrames = parseInt(vStream?.tags?.NUMBER_OF_FRAMES || vStream?.tags?.[\"NUMBER_OF_FRAMES-eng\"] || vStream?.nb_frames || 0, 10);\n\n  let timeTakenStr = \"\";\n  if (transcodeStartTs && transcodeEndTs) {\n    const transcodeMs = Math.max(1, transcodeEndTs - transcodeStartTs);\n    const transcodeSec = Math.max(1, transcodeMs / 1000);\n    const fpsStr = (totalFrames > 0 && transcodeSec > 2) ? ` @ ~${Math.round(totalFrames / transcodeSec)} FPS` : \"\";\n    timeTakenStr = `${formatDuration(totalFlowMs)} (Transcode: ${formatDuration(transcodeMs)}${fpsStr})`;\n  } else {\n    timeTakenStr = `${formatDuration(totalFlowMs)} (Remux only)`;\n  }\n\n  const filePath = args.inputFileObj?._id || args.originalLibraryFile?._id || \"Unknown file\";\n  const fileName = filePath.split(\"/\").pop();\n  \n  const origMB = args.originalLibraryFile?.file_size || 0;\n  const newMB = args.inputFileObj?.file_size || 0;\n  const pipelineMode = args.variables?.user?.qsv_mode || (transcodeStartTs && transcodeEndTs ? \"Full QSV Hardware\" : \"Library Reprocessing: Dual-Audio & Subtitle Normalization (Remux Only)\");\n  \n  let ratioStr = \"N/A\";\n  let savedStr = \"\";\n  if (origMB > 0 && newMB > 0) {\n    const ratio = ((newMB / origMB) * 100).toFixed(1);\n    ratioStr = `${ratio}% of original`;\n    const diffMB = origMB - newMB;\n    if (diffMB > 0) {\n      const pctSaved = (100 - ratio).toFixed(1);\n      savedStr = `\\n**Space Saved:** ${formatSize(diffMB)} (${pctSaved}% reduction)`;\n    } else if (diffMB < 0) {\n      const pctAdded = (ratio - 100).toFixed(1);\n      savedStr = `\\n**Size Change:** +${formatSize(Math.abs(diffMB))} (+${pctAdded}% - added audio/streams)`;\n    } else {\n      savedStr = `\\n**Size Change:** 0 MB (identical size)`;\n    }\n  }\n\n  const payload = JSON.stringify({\n    embeds: [{\n      title: (transcodeStartTs && transcodeEndTs) ? \"✅ Transcode Successful (AV1)\" : \"✅ Reprocess Successful (AV1 Remux)\",\n      description: `**File:** \\`${fileName}\\`\\n**Path:** \\`${filePath}\\`\\n\\n**Codec:** AV1\\n**Pipeline:** ${pipelineMode}\\n**Time Taken:** ${timeTakenStr}\\n**Original Size:** ${formatSize(origMB)}\\n**New Size:** ${formatSize(newMB)} (${ratioStr})${savedStr}\\n\\n**Status:** ${(transcodeStartTs && transcodeEndTs) ? \"Transcoded and replaced original file successfully.\" : \"Reprocessed audio/subtitles and replaced original file successfully.\"}`,\n      color: 3066993,\n      footer: {\n        text: \"Tdarr AV1 Flow • Transcode Success\"\n      },\n      timestamp: new Date().toISOString()\n    }]\n  });\n\n  try {\n    const url = new URL(webhookUrl);\n    await new Promise((resolve) => {\n      const req = https.request({\n        hostname: url.hostname,\n        path: url.pathname + url.search,\n        method: \"POST\",\n        headers: {\n          \"Content-Type\": \"application/json\",\n          \"User-Agent\": \"Tdarr-DiscordNotifier/1.0\",\n          \"Content-Length\": Buffer.byteLength(payload)\n        }\n      }, (res) => {\n        let body = \"\";\n        res.on(\"data\", chunk => { body += chunk; });\n        res.on(\"end\", () => {\n          if (res.statusCode >= 400) {\n            console.error(`[Discord Success Error] HTTP ${res.statusCode}: ${body}`);\n          } else {\n            console.log(`[Discord Success Notification] Sent successfully (HTTP ${res.statusCode})`);\n          }\n          resolve();\n        });\n      });\n      req.on(\"error\", (err) => {\n        console.error(\"[Discord Webhook Error]\", err);\n        resolve();\n      });\n      req.setTimeout(5000, () => { req.destroy(); resolve(); });\n      req.write(payload);\n      req.end();\n    });\n  } catch (e) {\n    console.error(\"[Discord Success Notifier] Exception:\", e);\n  }\n\n  return {\n    outputFileObj: args.inputFileObj,\n    outputNumber: 1,\n    variables: args.variables\n  };\n};"
+      },
+      "fpEnabled": true,
+      "id": "discord_success",
+      "position": {
+        "x": 1850,
+        "y": 800
+      }
+    },
+    {
+      "name": "🔔 Discord Notification: Transcode Failure",
+      "sourceRepo": "Community",
+      "pluginName": "customFunction",
+      "version": "1.0.0",
+      "inputsDB": {
+        "code": "module.exports = async (args) => {\n  const https = require(\"https\");\n  const webhookUrl = \"https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN\";\n\n  const formatSize = (mb) => {\n    if (!mb || mb <= 0) return \"Unknown\";\n    if (mb >= 1024) return (mb / 1024).toFixed(2) + \" GB (\" + mb.toFixed(0) + \" MB)\";\n    return mb.toFixed(2) + \" MB\";\n  };\n\n  const formatDuration = (ms) => {\n    if (!ms || ms < 0) return \"Unknown\";\n    const totalSec = Math.max(1, Math.round(ms / 1000));\n    const h = Math.floor(totalSec / 3600);\n    const m = Math.floor((totalSec % 3600) / 60);\n    const s = totalSec % 60;\n    if (h > 0) return `${h}h ${m}m ${s}s`;\n    if (m > 0) return `${m}m ${s}s`;\n    return `${s}s`;\n  };\n\n  const startTs = args.variables?.user?.flow_start_ts || args.originalLibraryFile?.createdAt || Date.now();\n  const timeTakenStr = formatDuration(Date.now() - startTs);\n\n  const filePath = args.inputFileObj?._id || args.originalLibraryFile?._id || \"Unknown file\";\n  const fileName = filePath.split(\"/\").pop();\n  const sizeMB = args.inputFileObj?.file_size || args.originalLibraryFile?.file_size || 0;\n  const pipelineMode = args.variables?.user?.qsv_mode || \"Unknown Pipeline\";\n\n  const payload = JSON.stringify({\n    embeds: [{\n      title: \"❌ Intel Arc QSV Transcoding Failed\",\n      description: `**File:** \\`${fileName}\\`\\n**Path:** \\`${filePath}\\`\\n**Pipeline:** ${pipelineMode}\\n**Time Elapsed:** ${timeTakenStr}\\n**Original Size:** ${formatSize(sizeMB)}\\n\\n**Verdict:** Encoding on Intel Arc GPU failed. Job marked as failed immediately (fail-fast active) to protect queue throughput.`,\n      color: 15158332,\n      footer: {\n        text: \"Tdarr AV1 Flow • Fail-Fast Transcode Error\"\n      },\n      timestamp: new Date().toISOString()\n    }]\n  });\n\n  try {\n    const url = new URL(webhookUrl);\n    await new Promise((resolve) => {\n      const req = https.request({\n        hostname: url.hostname,\n        path: url.pathname + url.search,\n        method: \"POST\",\n        headers: {\n          \"Content-Type\": \"application/json\",\n          \"User-Agent\": \"Tdarr-DiscordNotifier/1.0\",\n          \"Content-Length\": Buffer.byteLength(payload)\n        }\n      }, (res) => {\n        let body = \"\";\n        res.on(\"data\", chunk => { body += chunk; });\n        res.on(\"end\", () => {\n          if (res.statusCode >= 400) {\n            console.error(`[Discord Failure Error] HTTP ${res.statusCode}: ${body}`);\n          } else {\n            console.log(`[Discord Failure Notification] Sent successfully (HTTP ${res.statusCode})`);\n          }\n          resolve();\n        });\n      });\n      req.on(\"error\", (err) => {\n        console.error(\"[Discord Webhook Error]\", err);\n        resolve();\n      });\n      req.setTimeout(5000, () => { req.destroy(); resolve(); });\n      req.write(payload);\n      req.end();\n    });\n  } catch (e) {\n    console.error(\"[Discord Failure Notifier] Exception:\", e);\n  }\n\n  return {\n    outputFileObj: args.inputFileObj,\n    outputNumber: 1,\n    variables: args.variables\n  };\n};"
+      },
+      "fpEnabled": true,
+      "id": "discord_failure",
+      "position": {
+        "x": 2100,
+        "y": 520
+      }
+    },
+    {
+      "name": "🛡️ ISO Guard: Detect Disc Images",
+      "sourceRepo": "Community",
+      "pluginName": "customFunction",
+      "version": "1.0.0",
+      "inputsDB": {
+        "code": "module.exports = async (args) => {\n  if (!args.variables) args.variables = {};\n  if (!args.variables.user) args.variables.user = {};\n  if (!args.variables.user.flow_start_ts) {\n    args.variables.user.flow_start_ts = Date.now();\n  }\n\n  const container = (args.inputFileObj?.container || \"\").toLowerCase();\n  const filePath = (args.inputFileObj?._id || \"\").toLowerCase();\n  const isIso = container === \"iso\" || filePath.endsWith(\".iso\") || filePath.endsWith(\".img\");\n\n  if (isIso) {\n    console.log(`[ISO Guard] Detected raw disc image: ${args.inputFileObj?._id}. Routing to Discord alert and automatic deletion.`);\n    return {\n      outputFileObj: args.inputFileObj,\n      outputNumber: 2,\n      variables: args.variables\n    };\n  }\n\n  return {\n    outputFileObj: args.inputFileObj,\n    outputNumber: 1,\n    variables: args.variables\n  };\n};"
+      },
+      "fpEnabled": true,
+      "id": "isoFilter",
+      "position": {
+        "x": 1524,
+        "y": -540
+      }
+    },
+    {
+      "name": "🧹 In-Memory Stream Purger (QSV)",
+      "sourceRepo": "Community",
+      "pluginName": "customFunction",
+      "version": "1.0.0",
+      "inputsDB": {
+        "code": "module.exports = async (args) => {\n  if (args.variables?.ffmpegCommand?.streams) {\n    const badCodecs = [\"mov_text\", \"tx3g\", \"mjpeg\", \"bmp\", \"png\", \"gif\", \"tiff\", \"otf\", \"ttf\"];\n    const badCodecIDs = [\"s_text/webvtt\", \"mov_text\", \"tx3g\"];\n\n    let subIndex = 0;\n    const subArgs = [];\n\n    args.variables.ffmpegCommand.streams.forEach(stream => {\n      const codecName = (stream.codec_name || \"\").toLowerCase();\n      const codecId = (stream.codec_tag_string || stream.codec_id || \"\").toLowerCase();\n      const isBadSub = badCodecIDs.includes(codecId) || badCodecs.includes(codecName);\n      const isAttachment = stream.codec_type === \"attachment\"\n        || stream.disposition?.attached_pic === 1\n        || stream.disposition?.timed_thumbnails === 1;\n\n      // Do NOT remove the main video track (stream index 0)\n      if ((isBadSub || isAttachment) && stream.index !== 0) {\n        stream.removed = true;\n        console.log(`[Stream Purger] Safely excluded stream ${stream.index} (${codecName} / ${stream.codec_type}) to prevent FFmpeg muxer errors.`);\n      } else if (stream.codec_type === \"subtitle\") {\n        if (codecName === \"ass\" || codecName === \"ssa\") {\n          subArgs.push(`-c:s:${subIndex} srt`);\n          console.log(`[Subtitle Normalizer] Converting subtitle stream ${stream.index} (${codecName}) -> SRT`);\n        } else {\n          subArgs.push(`-c:s:${subIndex} copy`);\n        }\n        subIndex++;\n      }\n    });\n\n    if (!args.variables.user) args.variables.user = {};\n    args.variables.user.custom_sub_args = subArgs.length > 0 ? (\"-c:s copy \" + subArgs.join(\" \")) : \"-c:s copy\";\n  }\n\n  return {\n    outputFileObj: args.inputFileObj,\n    outputNumber: 1,\n    variables: args.variables\n  };\n};"
+      },
+      "fpEnabled": true,
+      "id": "streamPurger_qsv",
+      "position": {
+        "x": 2100,
+        "y": 80
+      }
+    },
+    {
+      "name": "🗑️ Discord Notification: ISO Deleted",
+      "sourceRepo": "Community",
+      "pluginName": "customFunction",
+      "version": "1.0.0",
+      "inputsDB": {
+        "code": "module.exports = async (args) => {\n  const https = require(\"https\");\n  const webhookUrl = \"https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN\";\n\n  const formatSize = (mb) => {\n    if (!mb || mb <= 0) return \"Unknown\";\n    if (mb >= 1024) return (mb / 1024).toFixed(2) + \" GB (\" + mb.toFixed(0) + \" MB)\";\n    return mb.toFixed(2) + \" MB\";\n  };\n\n  const formatDuration = (ms) => {\n    if (!ms || ms < 0) return \"Unknown\";\n    const totalSec = Math.max(1, Math.round(ms / 1000));\n    const h = Math.floor(totalSec / 3600);\n    const m = Math.floor((totalSec % 3600) / 60);\n    const s = totalSec % 60;\n    if (h > 0) return `${h}h ${m}m ${s}s`;\n    if (m > 0) return `${m}m ${s}s`;\n    return `${s}s`;\n  };\n\n  const startTs = args.variables?.user?.flow_start_ts || args.originalLibraryFile?.createdAt || Date.now();\n  const timeTakenStr = formatDuration(Date.now() - startTs);\n\n  const filePath = args.inputFileObj?._id || args.originalLibraryFile?._id || \"Unknown file\";\n  const fileName = filePath.split(\"/\").pop();\n  const sizeMB = args.inputFileObj?.file_size || args.originalLibraryFile?.file_size || 0;\n\n  const payload = JSON.stringify({\n    embeds: [{\n      title: \"🗑️ Disc Image (.iso) Auto-Deleted\",\n      description: `**File:** \\`${fileName}\\`\\n**Path:** \\`${filePath}\\`\\n**Size:** ${formatSize(sizeMB)}\\n**Time Elapsed:** ${timeTakenStr}\\n\\n**Action Taken:** File was automatically deleted from disk.\\n\\n**Why:** FFmpeg cannot transcode raw DVD/Blu-ray ISO disc structures directly without timestamp errors or truncated titles.\\n\\n**Next Steps:** Radarr/Sonarr will detect the missing file during library scan and automatically search for a standard MKV release.`,\n      color: 10181046,\n      footer: {\n        text: \"Tdarr Flow • ISO Auto-Remediation\"\n      },\n      timestamp: new Date().toISOString()\n    }]\n  });\n\n  try {\n    const url = new URL(webhookUrl);\n    await new Promise((resolve) => {\n      const req = https.request({\n        hostname: url.hostname,\n        path: url.pathname + url.search,\n        method: \"POST\",\n        headers: {\n          \"Content-Type\": \"application/json\",\n          \"User-Agent\": \"Tdarr-DiscordNotifier/1.0\",\n          \"Content-Length\": Buffer.byteLength(payload)\n        }\n      }, (res) => {\n        let body = \"\";\n        res.on(\"data\", chunk => { body += chunk; });\n        res.on(\"end\", () => {\n          if (res.statusCode >= 400) {\n            console.error(`[Discord ISO Error] HTTP ${res.statusCode}: ${body}`);\n          } else {\n            console.log(`[Discord ISO Notification] Sent successfully (HTTP ${res.statusCode})`);\n          }\n          resolve();\n        });\n      });\n      req.on(\"error\", (err) => {\n        console.error(\"[Discord Webhook Error]\", err);\n        resolve();\n      });\n      req.setTimeout(5000, () => { req.destroy(); resolve(); });\n      req.write(payload);\n      req.end();\n    });\n  } catch (e) {\n    console.error(\"[Discord ISO Notifier] Exception:\", e);\n  }\n\n  return {\n    outputFileObj: args.inputFileObj,\n    outputNumber: 1,\n    variables: args.variables\n  };\n};"
+      },
+      "fpEnabled": true,
+      "id": "discord_iso_deleted",
+      "position": {
+        "x": 1800,
+        "y": -540
+      }
+    },
+    {
+      "name": "🗑️ Delete ISO Disc Image",
+      "sourceRepo": "Community",
+      "pluginName": "deleteFile",
+      "version": "1.0.0",
+      "inputsDB": {
+        "deleteParentFolderIfEmpty": "false",
+        "fileToDelete": "originalFile"
+      },
+      "fpEnabled": true,
+      "id": "deleteFile_iso",
+      "position": {
+        "x": 2080,
+        "y": -540
+      }
+    },
+    {
+      "name": "⚠️ Discord Notification: Size Bloat (>110%)",
+      "sourceRepo": "Community",
+      "pluginName": "customFunction",
+      "version": "1.0.0",
+      "inputsDB": {
+        "code": "module.exports = async (args) => {\n  const https = require(\"https\");\n  const webhookUrl = \"https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN\";\n\n  const formatSize = (mb) => {\n    if (!mb || mb <= 0) return \"Unknown\";\n    if (mb >= 1024) return (mb / 1024).toFixed(2) + \" GB (\" + mb.toFixed(0) + \" MB)\";\n    return mb.toFixed(2) + \" MB\";\n  };\n\n  const formatDuration = (ms) => {\n    if (!ms || ms < 0) return \"0s\";\n    const totalSec = Math.max(1, Math.round(ms / 1000));\n    const h = Math.floor(totalSec / 3600);\n    const m = Math.floor((totalSec % 3600) / 60);\n    const s = totalSec % 60;\n    if (h > 0) return `${h}h ${m}m ${s}s`;\n    if (m > 0) return `${m}m ${s}s`;\n    return `${s}s`;\n  };\n\n  const flowStartTs = args.variables?.user?.flow_start_ts || args.originalLibraryFile?.createdAt || Date.now();\n  const totalFlowMs = Date.now() - flowStartTs;\n\n  const transcodeStartTs = args.variables?.user?.transcode_start_ts;\n  const transcodeEndTs = args.variables?.user?.transcode_end_ts;\n\n  const vStream = args.originalLibraryFile?.ffProbeData?.streams?.find(s => s.codec_type === \"video\");\n  const totalFrames = parseInt(vStream?.tags?.NUMBER_OF_FRAMES || vStream?.tags?.[\"NUMBER_OF_FRAMES-eng\"] || vStream?.nb_frames || 0, 10);\n\n  let timeTakenStr = \"\";\n  if (transcodeStartTs && transcodeEndTs) {\n    const transcodeMs = Math.max(1, transcodeEndTs - transcodeStartTs);\n    const transcodeSec = Math.max(1, transcodeMs / 1000);\n    const fpsStr = (totalFrames > 0 && transcodeSec > 2) ? ` @ ~${Math.round(totalFrames / transcodeSec)} FPS` : \"\";\n    timeTakenStr = `${formatDuration(totalFlowMs)} (Transcode: ${formatDuration(transcodeMs)}${fpsStr})`;\n  } else {\n    timeTakenStr = `${formatDuration(totalFlowMs)}`;\n  }\n\n  const pipelineMode = args.variables?.user?.qsv_mode || \"Remux / Stream Clean\";\n  const filePath = args.inputFileObj?._id || args.originalLibraryFile?._id || \"Unknown file\";\n  const fileName = filePath.split(\"/\").pop();\n  \n  const origMB = args.originalLibraryFile?.file_size || 0;\n  const newMB = args.inputFileObj?.file_size || 0;\n  \n  let ratioStr = \"N/A\";\n  if (origMB > 0 && newMB > 0) {\n    const ratio = ((newMB / origMB) * 100).toFixed(1);\n    ratioStr = `${ratio}% of original`;\n  }\n\n  const payload = JSON.stringify({\n    embeds: [{\n      title: \"⚠️ Transcode Discarded (Size Bloat > 110%)\",\n      description: `**File:** \\`${fileName}\\`\\n**Path:** \\`${filePath}\\`\\n\\n**Pipeline:** ${pipelineMode}\\n**Time Taken:** ${timeTakenStr}\\n**Original Size:** ${formatSize(origMB)}\\n**Transcode Size:** ${formatSize(newMB)} (${ratioStr})\\n\\n**Verdict:** Transcoded file exceeded 110% of original file size. Transcode cache discarded to prevent file bloat; original file preserved.`,\n      color: 15844367,\n      footer: {\n        text: \"Tdarr AV1 Flow • Size Ratio Exceeded\"\n      },\n      timestamp: new Date().toISOString()\n    }]\n  });\n\n  try {\n    const url = new URL(webhookUrl);\n    await new Promise((resolve) => {\n      const req = https.request({\n        hostname: url.hostname,\n        path: url.pathname + url.search,\n        method: \"POST\",\n        headers: {\n          \"Content-Type\": \"application/json\",\n          \"User-Agent\": \"Tdarr-DiscordNotifier/1.0\",\n          \"Content-Length\": Buffer.byteLength(payload)\n        }\n      }, (res) => {\n        let body = \"\";\n        res.on(\"data\", chunk => { body += chunk; });\n        res.on(\"end\", () => {\n          if (res.statusCode >= 400) {\n            console.error(`[Discord Bloat Error] HTTP ${res.statusCode}: ${body}`);\n          } else {\n            console.log(`[Discord Bloat Notification] Sent successfully (HTTP ${res.statusCode})`);\n          }\n          resolve();\n        });\n      });\n      req.on(\"error\", (err) => {\n        console.error(\"[Discord Webhook Error]\", err);\n        resolve();\n      });\n      req.setTimeout(5000, () => { req.destroy(); resolve(); });\n      req.write(payload);\n      req.end();\n    });\n  } catch (e) {\n    console.error(\"[Discord Bloat Notifier] Exception:\", e);\n  }\n\n  return {\n    outputFileObj: args.inputFileObj,\n    outputNumber: 1,\n    variables: args.variables\n  };\n};"
+      },
+      "fpEnabled": true,
+      "id": "discord_bloat",
+      "position": {
+        "x": 1900,
+        "y": 700
+      }
+    },
+    {
+      "name": "🗑️ Discord Notification: Corrupt File Deleted (<5%)",
+      "sourceRepo": "Community",
+      "pluginName": "customFunction",
+      "version": "1.0.0",
+      "inputsDB": {
+        "code": "module.exports = async (args) => {\n  const https = require(\"https\");\n  const webhookUrl = \"https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN\";\n\n  const formatSize = (mb) => {\n    if (!mb || mb <= 0) return \"Unknown\";\n    if (mb >= 1024) return (mb / 1024).toFixed(2) + \" GB (\" + mb.toFixed(0) + \" MB)\";\n    return mb.toFixed(2) + \" MB\";\n  };\n\n  const formatDuration = (ms) => {\n    if (!ms || ms < 0) return \"Unknown\";\n    const totalSec = Math.max(1, Math.round(ms / 1000));\n    const h = Math.floor(totalSec / 3600);\n    const m = Math.floor((totalSec % 3600) / 60);\n    const s = totalSec % 60;\n    if (h > 0) return `${h}h ${m}m ${s}s`;\n    if (m > 0) return `${m}m ${s}s`;\n    return `${s}s`;\n  };\n\n  const startTs = args.variables?.user?.flow_start_ts || args.originalLibraryFile?.createdAt || Date.now();\n  const timeTakenStr = formatDuration(Date.now() - startTs);\n\n  const filePath = args.inputFileObj?._id || args.originalLibraryFile?._id || \"Unknown file\";\n  const fileName = filePath.split(\"/\").pop();\n  \n  const origMB = args.originalLibraryFile?.file_size || 0;\n  const newMB = args.inputFileObj?.file_size || 0;\n  \n  let ratioStr = \"N/A\";\n  if (origMB > 0 && newMB > 0) {\n    const ratio = ((newMB / origMB) * 100).toFixed(1);\n    ratioStr = `${ratio}% of original`;\n  }\n\n  const payload = JSON.stringify({\n    embeds: [{\n      title: \"🗑️ Corrupted File Auto-Deleted (< 5% Size)\",\n      description: `**File:** \\`${fileName}\\`\\n**Path:** \\`${filePath}\\`\\n\\n**Time Elapsed:** ${timeTakenStr}\\n**Original Size:** ${formatSize(origMB)}\\n**Transcode Size:** ${formatSize(newMB)} (${ratioStr})\\n\\n**Action Taken:** Original file was deleted from disk.\\n\\n**Why:** Transcoded file is under 5% of original (<5%), indicating the source file was corrupted, incomplete, or damaged.\\n\\n**Next Steps:** Sonarr/Radarr will detect the missing file during library scan and search for a replacement release.`,\n      color: 15158332,\n      footer: {\n        text: \"Tdarr AV1 Flow • Corrupt File Auto-Remediation\"\n      },\n      timestamp: new Date().toISOString()\n    }]\n  });\n\n  try {\n    const url = new URL(webhookUrl);\n    await new Promise((resolve) => {\n      const req = https.request({\n        hostname: url.hostname,\n        path: url.pathname + url.search,\n        method: \"POST\",\n        headers: {\n          \"Content-Type\": \"application/json\",\n          \"User-Agent\": \"Tdarr-DiscordNotifier/1.0\",\n          \"Content-Length\": Buffer.byteLength(payload)\n        }\n      }, (res) => {\n        let body = \"\";\n        res.on(\"data\", chunk => { body += chunk; });\n        res.on(\"end\", () => {\n          if (res.statusCode >= 400) {\n            console.error(`[Discord Corrupt Error] HTTP ${res.statusCode}: ${body}`);\n          } else {\n            console.log(`[Discord Corrupt Notification] Sent successfully (HTTP ${res.statusCode})`);\n          }\n          resolve();\n        });\n      });\n      req.on(\"error\", (err) => {\n        console.error(\"[Discord Webhook Error]\", err);\n        resolve();\n      });\n      req.setTimeout(5000, () => { req.destroy(); resolve(); });\n      req.write(payload);\n      req.end();\n    });\n  } catch (e) {\n    console.error(\"[Discord Corrupt Notifier] Exception:\", e);\n  }\n\n  return {\n    outputFileObj: args.inputFileObj,\n    outputNumber: 1,\n    variables: args.variables\n  };\n};"
+      },
+      "fpEnabled": true,
+      "id": "discord_undersized",
+      "position": {
+        "x": 1900,
+        "y": 600
+      }
+    },
+    {
+      "name": "⚠️ Discord Notification: Incompatible Format",
+      "sourceRepo": "Community",
+      "pluginName": "customFunction",
+      "version": "1.0.0",
+      "inputsDB": {
+        "code": "module.exports = async (args) => {\n  const https = require(\"https\");\n  const webhookUrl = \"https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN\";\n\n  const formatSize = (mb) => {\n    if (!mb || mb <= 0) return \"Unknown\";\n    if (mb >= 1024) return (mb / 1024).toFixed(2) + \" GB (\" + mb.toFixed(0) + \" MB)\";\n    return mb.toFixed(2) + \" MB\";\n  };\n\n  const formatDuration = (ms) => {\n    if (!ms || ms < 0) return \"Unknown\";\n    const totalSec = Math.max(1, Math.round(ms / 1000));\n    const h = Math.floor(totalSec / 3600);\n    const m = Math.floor((totalSec % 3600) / 60);\n    const s = totalSec % 60;\n    if (h > 0) return `${h}h ${m}m ${s}s`;\n    if (m > 0) return `${m}m ${s}s`;\n    return `${s}s`;\n  };\n\n  const startTs = args.variables?.user?.flow_start_ts || args.originalLibraryFile?.createdAt || Date.now();\n  const timeTakenStr = formatDuration(Date.now() - startTs);\n\n  const filePath = args.inputFileObj?._id || args.originalLibraryFile?._id || \"Unknown file\";\n  const fileName = filePath.split(\"/\").pop();\n  const sizeMB = args.inputFileObj?.file_size || args.originalLibraryFile?.file_size || 0;\n\n  const videoStream = args.inputFileObj?.ffProbeData?.streams?.find(s => s.codec_type === \"video\") || {};\n  const codec = videoStream.codec_name || \"Unknown\";\n  const pixFmt = videoStream.pix_fmt || \"Unknown\";\n\n  const payload = JSON.stringify({\n    embeds: [{\n      title: \"⚠️ Transcode Skipped: Unsupported Pixel Format\",\n      description: `**File:** \\`${fileName}\\`\\n**Path:** \\`${filePath}\\`\\n**Video Stream:** \\`${codec}\\` (${pixFmt})\\n**Size:** ${formatSize(sizeMB)}\\n**Time Elapsed:** ${timeTakenStr}\\n\\n**Verdict:** Pixel format (${pixFmt}) is not a standard 4:2:0 format supported by the Intel Arc QSV hardware encoder (e.g. 4:2:2 or 4:4:4 chroma). Skipped immediately.`,\n      color: 16776960,\n      footer: {\n        text: \"Tdarr AV1 Flow • QSV Compatibility Filter\"\n      },\n      timestamp: new Date().toISOString()\n    }]\n  });\n\n  try {\n    const url = new URL(webhookUrl);\n    await new Promise((resolve) => {\n      const req = https.request({\n        hostname: url.hostname,\n        path: url.pathname + url.search,\n        method: \"POST\",\n        headers: {\n          \"Content-Type\": \"application/json\",\n          \"User-Agent\": \"Tdarr-DiscordNotifier/1.0\",\n          \"Content-Length\": Buffer.byteLength(payload)\n        }\n      }, (res) => {\n        let body = \"\";\n        res.on(\"data\", chunk => { body += chunk; });\n        res.on(\"end\", () => {\n          if (res.statusCode >= 400) {\n            console.error(`[Discord Incompatible Error] HTTP ${res.statusCode}: ${body}`);\n          } else {\n            console.log(`[Discord Incompatible Notification] Sent successfully (HTTP ${res.statusCode})`);\n          }\n          resolve();\n        });\n      });\n      req.on(\"error\", (err) => {\n        console.error(\"[Discord Webhook Error]\", err);\n        resolve();\n      });\n      req.setTimeout(5000, () => { req.destroy(); resolve(); });\n      req.write(payload);\n      req.end();\n    });\n  } catch (e) {\n    console.error(\"[Discord Incompatible Notifier] Exception:\", e);\n  }\n\n  return {\n    outputFileObj: args.inputFileObj,\n    outputNumber: 1,\n    variables: args.variables\n  };\n};"
+      },
+      "fpEnabled": true,
+      "id": "discord_incompatible",
+      "position": {
+        "x": 2100,
+        "y": -40
+      }
+    },
+    {
+      "name": "⏱️ Transcode Timer Start",
+      "sourceRepo": "Community",
+      "pluginName": "customFunction",
+      "version": "1.0.0",
+      "inputsDB": {
+        "code": "module.exports = async (args) => {\n  if (!args.variables) args.variables = {};\n  if (!args.variables.user) args.variables.user = {};\n  args.variables.user.transcode_start_ts = Date.now();\n  return {\n    outputFileObj: args.inputFileObj,\n    outputNumber: 1,\n    variables: args.variables\n  };\n};"
+      },
+      "fpEnabled": true,
+      "id": "timer_transcode_start",
+      "position": {
+        "x": 1596,
+        "y": 430
+      }
+    },
+    {
+      "name": "⏱️ Transcode Timer End",
+      "sourceRepo": "Community",
+      "pluginName": "customFunction",
+      "version": "1.0.0",
+      "inputsDB": {
+        "code": "module.exports = async (args) => {\n  if (!args.variables) args.variables = {};\n  if (!args.variables.user) args.variables.user = {};\n  args.variables.user.transcode_end_ts = Date.now();\n  return {\n    outputFileObj: args.inputFileObj,\n    outputNumber: 1,\n    variables: args.variables\n  };\n};"
+      },
+      "fpEnabled": true,
+      "id": "timer_transcode_end",
+      "position": {
+        "x": 1596,
+        "y": 520
+      }
+    },
+    {
+      "name": "Dual-Audio: Downmix Missing Stereo (AAC)",
+      "sourceRepo": "Community",
+      "pluginName": "runClassicTranscodePlugin",
+      "version": "2.0.0",
+      "inputsDB": {
+        "pluginSourceId": "Community:Tdarr_Plugin_MC93_Migz5ConvertAudio",
+        "aac_stereo": "false",
+        "downmix": "true",
+        "downmix_single_track": "false"
+      },
+      "fpEnabled": true,
+      "id": "audioDownmix_aac",
+      "position": {
+        "x": 1392,
+        "y": -250
+      }
+    },
+    {
+      "name": "Subtitle Normalizer: ASS -> SRT",
+      "sourceRepo": "Community",
+      "pluginName": "customFunction",
+      "version": "1.0.0",
+      "inputsDB": {
+        "code": "const fs = require(\"fs\");\nconst { execSync } = require(\"child_process\");\nconst path = require(\"path\");\n\nmodule.exports = async (args) => {\n  const streams = args.inputFileObj?.ffProbeData?.streams || [];\n  const hasAss = streams.some(s => s.codec_type === \"subtitle\" && [\"ass\", \"ssa\"].includes((s.codec_name || \"\").toLowerCase()));\n\n  if (!hasAss) {\n    return {\n      outputFileObj: args.inputFileObj,\n      outputNumber: 1,\n      variables: args.variables\n    };\n  }\n\n  const inputPath = args.inputFileObj?._id;\n  if (!inputPath || !fs.existsSync(inputPath)) {\n    return {\n      outputFileObj: args.inputFileObj,\n      outputNumber: 1,\n      variables: args.variables\n    };\n  }\n\n  console.log(`[Subtitle Normalizer] Converting ASS/SSA subtitles to SRT in AV1 file: ${inputPath}`);\n\n  try {\n    const parsed = path.parse(inputPath);\n    const outputPath = path.join(parsed.dir, `${parsed.name}_norm${parsed.ext}`);\n\n    let subIndex = 0;\n    const subArgs = [];\n    streams.forEach(s => {\n      if (s.codec_type === \"subtitle\") {\n        const codec = (s.codec_name || \"\").toLowerCase();\n        if (codec === \"ass\" || codec === \"ssa\") {\n          subArgs.push(`-c:s:${subIndex} srt`);\n        } else {\n          subArgs.push(`-c:s:${subIndex} copy`);\n        }\n        subIndex++;\n      }\n    });\n\n    const ffmpegCmd = `ffmpeg -y -i \"${inputPath}\" -c:v copy -c:a copy -c:s copy ${subArgs.join(\" \")} \"${outputPath}\"`;\n    execSync(ffmpegCmd, { stdio: \"ignore\" });\n\n    if (fs.existsSync(outputPath) && fs.statSync(outputPath).size > 1000) {\n      fs.unlinkSync(inputPath);\n      fs.renameSync(outputPath, inputPath);\n      console.log(`[Subtitle Normalizer] Successfully normalized subtitles in ${inputPath}`);\n      if (args.variables?.user) {\n        args.variables.user.qsv_mode = \"Library Reprocessing: Dual-Audio & Subtitle Normalization (Remux Only)\";\n      }\n    }\n  } catch (e) {\n    console.error(\"[Subtitle Normalizer] Failed to convert ASS to SRT:\", e);\n  }\n\n  return {\n    outputFileObj: args.inputFileObj,\n    outputNumber: 1,\n    variables: args.variables\n  };\n};"
+      },
+      "fpEnabled": true,
+      "id": "subConvert_av1",
+      "position": {
+        "x": 1392,
+        "y": 10
+      }
+    }
+  ],
+  "flowEdges": [
+    {
+      "source": "Fipyujmi9",
+      "sourceHandle": "4",
+      "target": "Ez7vZw4ja",
+      "targetHandle": null,
+      "id": "tcChxEw8o"
+    },
+    {
+      "source": "Fipyujmi9",
+      "sourceHandle": "5",
+      "target": "_aMYfUDQM",
+      "targetHandle": null,
+      "id": "MovyLtpMU"
+    },
+    {
+      "source": "Fipyujmi9",
+      "sourceHandle": "6",
+      "target": "_aMYfUDQM",
+      "targetHandle": null,
+      "id": "yH9ED90Td"
+    },
+    {
+      "source": "Fipyujmi9",
+      "sourceHandle": "7",
+      "target": "_aMYfUDQM",
+      "targetHandle": null,
+      "id": "VHZmY87D7"
+    },
+    {
+      "source": "Fipyujmi9",
+      "sourceHandle": "8",
+      "target": "_aMYfUDQM",
+      "targetHandle": null,
+      "id": "K5QVM8owu"
+    },
+    {
+      "source": "Fipyujmi9",
+      "sourceHandle": "9",
+      "target": "_aMYfUDQM",
+      "targetHandle": null,
+      "id": "Iut1jR0ED"
+    },
+    {
+      "source": "nvhiecc42",
+      "sourceHandle": "1",
+      "target": "2mA1B19I3",
+      "targetHandle": null,
+      "id": "I1aQ5ijlV"
+    },
+    {
+      "source": "Fipyujmi9",
+      "sourceHandle": "3",
+      "target": "tOPfyhMFu",
+      "targetHandle": null,
+      "id": "YIiR8sj-z"
+    },
+    {
+      "source": "Fipyujmi9",
+      "sourceHandle": "2",
+      "target": "tOPfyhMFu",
+      "targetHandle": null,
+      "id": "P76IlQLp-"
+    },
+    {
+      "source": "Fipyujmi9",
+      "sourceHandle": "1",
+      "target": "tOPfyhMFu",
+      "targetHandle": null,
+      "id": "wjdPKTcQu"
+    },
+    {
+      "source": "7C0uwPJUI",
+      "sourceHandle": "1",
+      "target": "6a0HyfVUa",
+      "targetHandle": null,
+      "id": "vaiw2Nz7o"
+    },
+    {
+      "source": "Nb5_A6I_Z",
+      "sourceHandle": "1",
+      "target": "xG56Of7cp",
+      "targetHandle": null,
+      "id": "wkkdjJVX-"
+    },
+    {
+      "source": "YLKhB7Ofm",
+      "sourceHandle": "1",
+      "target": "rsUnoPt6C",
+      "targetHandle": null,
+      "id": "SsCgVuuXU"
+    },
+    {
+      "source": "YLKhB7Ofm",
+      "sourceHandle": "2",
+      "target": "rsUnoPt6C",
+      "targetHandle": null,
+      "id": "AbwhaLnSq"
+    },
+    {
+      "source": "pu9XETsdY",
+      "sourceHandle": "1",
+      "target": "kr68epn5l",
+      "targetHandle": null,
+      "id": "id1DqnKFJ"
+    },
+    {
+      "source": "5sziHU00e",
+      "sourceHandle": "1",
+      "target": "nvhiecc42",
+      "targetHandle": null,
+      "id": "3Ga6IEQxd"
+    },
+    {
+      "source": "tOPfyhMFu",
+      "sourceHandle": "1",
+      "target": "5sziHU00e",
+      "targetHandle": null,
+      "id": "tTRtRd28_"
+    },
+    {
+      "source": "Ez7vZw4ja",
+      "sourceHandle": "1",
+      "target": "5sziHU00e",
+      "targetHandle": null,
+      "id": "OYMixjGRI"
+    },
+    {
+      "source": "_aMYfUDQM",
+      "sourceHandle": "1",
+      "target": "5sziHU00e",
+      "targetHandle": null,
+      "id": "I29a19oVY"
+    },
+    {
+      "source": "rsUnoPt6C",
+      "sourceHandle": "1",
+      "target": "sD0ocUAtK",
+      "targetHandle": null,
+      "id": "8VSIYHAWg"
+    },
+    {
+      "source": "rsUnoPt6C",
+      "sourceHandle": "2",
+      "target": "sD0ocUAtK",
+      "targetHandle": null,
+      "id": "J9crlmAOz"
+    },
+    {
+      "source": "sD0ocUAtK",
+      "sourceHandle": "1",
+      "target": "dA_-tC25r",
+      "targetHandle": null,
+      "id": "UPvhNsa9K"
+    },
+    {
+      "source": "sD0ocUAtK",
+      "sourceHandle": "2",
+      "target": "dA_-tC25r",
+      "targetHandle": null,
+      "id": "cvCkxFnvU"
+    },
+    {
+      "source": "XneJMBTXQ",
+      "sourceHandle": "1",
+      "target": "VdondiAXt",
+      "targetHandle": null,
+      "id": "Xne_to_Vdo_1"
+    },
+    {
+      "source": "XneJMBTXQ",
+      "sourceHandle": "2",
+      "target": "VdondiAXt",
+      "targetHandle": null,
+      "id": "Xne_to_Vdo_2"
+    },
+    {
+      "source": "VdondiAXt",
+      "sourceHandle": "1",
+      "target": "MtnEIKwAT",
+      "targetHandle": null,
+      "id": "Vdo_to_Mtn_1"
+    },
+    {
+      "source": "VdondiAXt",
+      "sourceHandle": "2",
+      "target": "MtnEIKwAT",
+      "targetHandle": null,
+      "id": "Vdo_to_Mtn_2"
+    },
+    {
+      "source": "FfO8ji8Mm",
+      "sourceHandle": "1",
+      "target": "dropBrokenSubs",
+      "targetHandle": null,
+      "id": "FfO_to_dropBrokenSubs"
+    },
+    {
+      "source": "xG56Of7cp",
+      "sourceHandle": "1",
+      "target": "discord_success",
+      "targetHandle": null,
+      "id": "xG56_to_discord"
+    },
+    {
+      "source": "kr68epn5l",
+      "sourceHandle": "1",
+      "target": "discord_success",
+      "targetHandle": null,
+      "id": "kr68_to_discord"
+    },
+    {
+      "source": "discord_failure",
+      "sourceHandle": "1",
+      "target": "YoqEPsDlN",
+      "targetHandle": null,
+      "id": "discord_failure_to_failFlow"
+    },
+    {
+      "source": "y4lqcdrho",
+      "sourceHandle": "1",
+      "target": "isoFilter",
+      "targetHandle": null,
+      "id": "y4l_to_isoFilter"
+    },
+    {
+      "source": "isoFilter",
+      "sourceHandle": "1",
+      "target": "FfO8ji8Mm",
+      "targetHandle": null,
+      "id": "isoFilter_to_FfO"
+    },
+    {
+      "source": "6a0HyfVUa",
+      "sourceHandle": "1",
+      "target": "streamPurger_qsv",
+      "targetHandle": null,
+      "id": "6a0_to_streamPurger_qsv"
+    },
+    {
+      "source": "streamPurger_qsv",
+      "sourceHandle": "1",
+      "target": "Fipyujmi9",
+      "targetHandle": null,
+      "id": "streamPurger_qsv_to_Fipy"
+    },
+    {
+      "source": "isoFilter",
+      "sourceHandle": "2",
+      "target": "discord_iso_deleted",
+      "targetHandle": null,
+      "id": "isoFilter_to_discordIso"
+    },
+    {
+      "source": "discord_iso_deleted",
+      "sourceHandle": "1",
+      "target": "deleteFile_iso",
+      "targetHandle": null,
+      "id": "discordIso_to_deleteIso"
+    },
+    {
+      "source": "Nb5_A6I_Z",
+      "sourceHandle": "2",
+      "target": "discord_undersized",
+      "targetHandle": null,
+      "id": "e_Nb5_A6I_Z_2_discord_undersized"
+    },
+    {
+      "source": "pu9XETsdY",
+      "sourceHandle": "2",
+      "target": "discord_undersized",
+      "targetHandle": null,
+      "id": "e_pu9XETsdY_2_discord_undersized"
+    },
+    {
+      "source": "discord_undersized",
+      "sourceHandle": "1",
+      "target": "SUlM1CMw_",
+      "targetHandle": null,
+      "id": "e_discord_undersized_1_SUlM1CMw_"
+    },
+    {
+      "source": "Nb5_A6I_Z",
+      "sourceHandle": "3",
+      "target": "discord_bloat",
+      "targetHandle": null,
+      "id": "e_Nb5_A6I_Z_3_discord_bloat"
+    },
+    {
+      "source": "pu9XETsdY",
+      "sourceHandle": "3",
+      "target": "kr68epn5l",
+      "targetHandle": null,
+      "id": "e_pu9XETsdY_3_kr68epn5l"
+    },
+    {
+      "source": "discord_bloat",
+      "sourceHandle": "1",
+      "target": "wFa2GjtyQ",
+      "targetHandle": null,
+      "id": "e_discord_bloat_1_wFa2GjtyQ"
+    },
+    {
+      "source": "JsxYlOe_E",
+      "sourceHandle": "1",
+      "target": "7C0uwPJUI",
+      "targetHandle": null,
+      "id": "e_JsxYlOe_E_1_7C0uwPJUI"
+    },
+    {
+      "source": "JsxYlOe_E",
+      "sourceHandle": "2",
+      "target": "discord_incompatible",
+      "targetHandle": null,
+      "id": "e_JsxYlOe_E_2_discord_incompatible"
+    },
+    {
+      "source": "discord_incompatible",
+      "sourceHandle": "1",
+      "target": "YoqEPsDlN",
+      "targetHandle": null,
+      "id": "e_discord_incompatible_1_YoqEPsDlN"
+    },
+    {
+      "source": "OBbLCZ8SO",
+      "sourceHandle": "err1",
+      "target": "discord_failure",
+      "targetHandle": null,
+      "id": "e_OBbLCZ8SO_err1_discord_failure"
+    },
+    {
+      "source": "2mA1B19I3",
+      "sourceHandle": "1",
+      "target": "timer_transcode_start",
+      "targetHandle": null,
+      "id": "e_2mA1_to_timer_start"
+    },
+    {
+      "source": "timer_transcode_start",
+      "sourceHandle": "1",
+      "target": "OBbLCZ8SO",
+      "targetHandle": null,
+      "id": "e_timer_start_to_OBbL"
+    },
+    {
+      "source": "OBbLCZ8SO",
+      "sourceHandle": "1",
+      "target": "timer_transcode_end",
+      "targetHandle": null,
+      "id": "e_OBbL_to_timer_end"
+    },
+    {
+      "source": "timer_transcode_end",
+      "sourceHandle": "1",
+      "target": "Nb5_A6I_Z",
+      "targetHandle": null,
+      "id": "e_timer_end_to_Nb5_"
+    },
+    {
+      "source": "dropBrokenSubs",
+      "sourceHandle": "1",
+      "target": "XneJMBTXQ",
+      "targetHandle": null,
+      "id": "e_drop_to_Xne_1"
+    },
+    {
+      "source": "dropBrokenSubs",
+      "sourceHandle": "2",
+      "target": "XneJMBTXQ",
+      "targetHandle": null,
+      "id": "e_drop_to_Xne_2"
+    },
+    {
+      "source": "MtnEIKwAT",
+      "sourceHandle": "1",
+      "target": "audioDownmix_aac",
+      "targetHandle": null,
+      "id": "e_Mtn_to_audioDownmix_1"
+    },
+    {
+      "source": "MtnEIKwAT",
+      "sourceHandle": "2",
+      "target": "Kw1n2xZEQ",
+      "targetHandle": null,
+      "id": "e_Mtn_to_Kw1_2"
+    },
+    {
+      "source": "Kw1n2xZEQ",
+      "sourceHandle": "1",
+      "target": "audioDownmix_aac",
+      "targetHandle": null,
+      "id": "e_Kw1_to_audioDownmix_1"
+    },
+    {
+      "source": "Kw1n2xZEQ",
+      "sourceHandle": "2",
+      "target": "audioDownmix_aac",
+      "targetHandle": null,
+      "id": "e_Kw1_to_audioDownmix_2"
+    },
+    {
+      "source": "audioDownmix_aac",
+      "sourceHandle": "1",
+      "target": "YLKhB7Ofm",
+      "targetHandle": null,
+      "id": "e_audioDownmix_to_YLK_1"
+    },
+    {
+      "source": "audioDownmix_aac",
+      "sourceHandle": "2",
+      "target": "YLKhB7Ofm",
+      "targetHandle": null,
+      "id": "e_audioDownmix_to_YLK_2"
+    },
+    {
+      "source": "dA_-tC25r",
+      "sourceHandle": "1",
+      "target": "x4UqtuCK9",
+      "targetHandle": null,
+      "id": "e_dA_to_x4U_1"
+    },
+    {
+      "source": "dA_-tC25r",
+      "sourceHandle": "2",
+      "target": "x4UqtuCK9",
+      "targetHandle": null,
+      "id": "e_dA_to_x4U_2"
+    },
+    {
+      "source": "x4UqtuCK9",
+      "sourceHandle": "1",
+      "target": "subConvert_av1",
+      "targetHandle": null,
+      "id": "e_x4U_to_subConvert_1"
+    },
+    {
+      "source": "subConvert_av1",
+      "sourceHandle": "1",
+      "target": "pu9XETsdY",
+      "targetHandle": null,
+      "id": "e_subConvert_to_pu9_1"
+    },
+    {
+      "source": "x4UqtuCK9",
+      "sourceHandle": "2",
+      "target": "JsxYlOe_E",
+      "targetHandle": null,
+      "id": "e_x4U_to_Jsx_2"
+    }
+  ]
+}
