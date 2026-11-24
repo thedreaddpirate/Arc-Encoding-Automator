@@ -43,6 +43,7 @@ ENGLISHSELECTION=0
 AUDIOCONVERSION=0
 EMPTYCHAPTERPROBE=""
 FRAMERATE=""
+GOPSIZE=300
 EXITCODE=0
 FORCEDETELECINE=0
 
@@ -65,7 +66,7 @@ show_help() {
     echo "	-k					If you wish to select Korean language audio tracks, enable this option."
     echo "	-m					If you wish to select Chinese language audio tracks, enable this option.  This should select the most common dialets."
     echo "	-s					If you wish to select Spanish language audio tracks, enable this option."
-    echo "	-h					Disables hardware accelerated DEcoding.  Useful if the source video uses a codec I haven't added to the block list."
+    echo "	-d					Disables hardware accelerated DEcoding.  Useful if the source video uses a codec I haven't added to the block list."
     echo "	-e					When this option is enabled the input file will be remuxed as well as English audio/subtitle selection."
     echo "						No encoding will occur.  Can be combined with a, k, and m."
     echo "	-o					When this option is enabled only the audio will be re-encoded to OPUS, when applicable.  Can be combined"
@@ -147,13 +148,13 @@ av1Encode () {
 	${ffmpeg} \
 	    -nostdin \
 		-y \
-		-init_hw_device vaapi=va:,driver=iHD,kernel_driver=i915 \
+		-init_hw_device vaapi=va:,driver=iHD \
+		-init_hw_device qsv=qs@va \
+		-filter_hw_device qs \
 		-hide_banner \
 		-stats \
 		-fflags +genpts+igndts \
 		-v error \
-		-init_hw_device qsv=qs@va \
-		-filter_hw_device qs \
 		${decodeAccel} \
 		-hwaccel_output_format qsv \
 		-extra_hw_frames 40 \
@@ -163,18 +164,22 @@ av1Encode () {
 		-c:v av1_qsv \
 		-q:v 22 \
 		-preset veryslow \
+		-async_depth 1 \
+		-extbrc 1 \
+		-rc icq \
 		-look_ahead_depth 40 \
+		-adaptive_i 1 \
+		-adaptive_b 1 \
+		-b_strategy 1 \
+		-bf 39 \
+		-g ${GOPSIZE} \
+  		-forced_idr 1 \
 		-map_chapters 0 \
 		${audioCommand} \
 		${subCommand} \
 		${FRAMERATE} \
 		-disposition:s 0 \
-		-low_delay_brc 1 \
-		-extbrc 1 \
-		-adaptive_i 1 \
-		-adaptive_b 1 \
-		-b_strategy 1 \
-		-bf 39 \
+		-low_power 1 \
 		-max_muxing_queue_size 2048 \
 		-max_interleave_delta 0 \
 		-avoid_negative_ts disabled \
@@ -303,8 +308,9 @@ audioMapping () {
 			((++trackNumber))
 			echo ${audioLoop}
 		else
-			audioLoop="-map 0:a:${index} -c:a:${trackNumber} libopus -vbr on -compression_level 10 -application audio"
 			channels=$(jq --arg l ${index} '.streams[$l|fromjson].channels' <<< "${AUDIOFFPROBE}")
+			bitrate=$(awk "BEGIN { print ( ${channels} * 64 )}")
+			audioLoop="-map 0:a:${index} -c:a:${trackNumber} libopus -b:a:${trackNumber} ${bitrate}k -vbr on -compression_level 10 -application audio"
 			echo "Track ${trackNumber} will be converted to OPUS" 1>&2 | tee ${OUTPROMPT}
 			if [ ${channels} -gt 2 -a ${channels} -lt 6 ]; then
 				audioLoop="-mapping_family 1 -ac ${channels}"
@@ -520,6 +526,7 @@ generateFilters () {
 	if [ ${setDeinterlace} -eq 1 ]; then 
 		if [ ${setFramerate} -eq 1 ]; then 
 			deinterlace="vpp_qsv=rate=0:deinterlace=2:framerate=${newFrameRate},"
+			GOPSIZE=$(printf "%.0f" `awk "BEGIN {print (( ${frameRateNum} + 1 ) / ${frameRateDenom}) * 10 }"`)
 		else 
 			deinterlace="vpp_qsv=rate=0:deinterlace=2,"
 		fi
@@ -554,6 +561,7 @@ generateFilterParameters () {
 	frameRateNum=$(echo ${rawParams} | grep -o 'r_frame_rate=[0-9]*/[0-9]\+' | awk -F '=' '{print $2}' | awk -F '/' '{print $1}' | head -1 | bc)
 	frameRateDenom=$(echo ${rawParams} | grep -o 'r_frame_rate=[0-9]*/[0-9]\+' | awk -F '=' '{print $2}' | awk -F '/' '{print $2}' | head -1 | bc)
 	frameRate="${frameRateNum}/${frameRateDenom}"
+	GOPSIZE=$(printf "%.0f" `awk "BEGIN {print (${frameRate} * 10)}"`)
 	numOfFrames=$(echo -e "${rawParams}" | grep -E 'NUMBER_OF_FRAMES|nb_frames' | grep -v "N\/A" | grep "=" | awk -F '=' '{print $2}' | head -1)
 	inputBitDepth=$(echo ${rawParams} | grep -o 'pix_fmt=[a-z,0-9]\+' | awk -F '=' '{print $2}' | head -1)
 	sar=$(echo ${rawParams} | grep -o 'sample_aspect_ratio=[0-9]*:[0-9]\+' | awk -F '=' '{print $2}' | head -1)
@@ -577,16 +585,24 @@ generateFilterParameters () {
 	esac
 
 	# ffmpeg to detect black bars for cropping.
-	midPoint1=$(awk "BEGIN{print (${duration} / 4)}")
-	midPoint2=$(awk "BEGIN{print (${duration} / 3)}")
-	midPoint3=$(awk "BEGIN{print (${duration} / 2)}")
+	midPoint1=$(awk "BEGIN{print (${duration} / 6)}")
+	midPoint2=$(awk "BEGIN{print (${duration} / 5)}")
+	midPoint3=$(awk "BEGIN{print (${duration} / 4)}")
+	midPoint4=$(awk "BEGIN{print (${duration} / 3)}")
+	midPoint5=$(awk "BEGIN{print (${duration} / 2)}")
+	midPoint6=$(awk "BEGIN{print (${duration} / 1.5)}")
+	midPoint7=$(awk "BEGIN{print (${duration} / 1.25)}")
 	endPoint=$(awk "BEGIN{print (${duration} - 11)}") 
 
 	rawCrop1=$(${ffmpeg} -nostdin -ss 0 -t 10 -i "${inputFile}" -vf fps=1/2,cropdetect=mode=black:reset=50,metadata=mode=print -f null - 2>&1 | awk '/crop=/ {a=$NF} END{print a}' | awk -F '=' '{print $2}')
 	rawCrop2=$(${ffmpeg} -nostdin -ss ${midPoint1} -t 10 -i "${inputFile}" -vf fps=1/2,cropdetect=mode=black:reset=50,metadata=mode=print -f null - 2>&1 | awk '/crop=/ {a=$NF} END{print a}' | awk -F '=' '{print $2}')
 	rawCrop3=$(${ffmpeg} -nostdin -ss ${midPoint2} -t 10 -i "${inputFile}" -vf fps=1/2,cropdetect=mode=black:reset=50,metadata=mode=print -f null - 2>&1 | awk '/crop=/ {a=$NF} END{print a}' | awk -F '=' '{print $2}')
 	rawCrop4=$(${ffmpeg} -nostdin -ss ${midPoint3} -t 10 -i "${inputFile}" -vf fps=1/2,cropdetect=mode=black:reset=50,metadata=mode=print -f null - 2>&1 | awk '/crop=/ {a=$NF} END{print a}' | awk -F '=' '{print $2}')
-	rawCrop3=$(${ffmpeg} -nostdin -ss ${endPoint} -t 10 -i "${inputFile}" -vf fps=1/2,cropdetect=mode=black:reset=50,metadata=mode=print -f null - 2>&1 | awk '/crop=/ {a=$NF} END{print a}' | awk -F '=' '{print $2}')
+	rawCrop5=$(${ffmpeg} -nostdin -ss ${midPoint4} -t 10 -i "${inputFile}" -vf fps=1/2,cropdetect=mode=black:reset=50,metadata=mode=print -f null - 2>&1 | awk '/crop=/ {a=$NF} END{print a}' | awk -F '=' '{print $2}')
+	rawCrop6=$(${ffmpeg} -nostdin -ss ${midPoint5} -t 10 -i "${inputFile}" -vf fps=1/2,cropdetect=mode=black:reset=50,metadata=mode=print -f null - 2>&1 | awk '/crop=/ {a=$NF} END{print a}' | awk -F '=' '{print $2}')
+	rawCrop7=$(${ffmpeg} -nostdin -ss ${midPoint6} -t 10 -i "${inputFile}" -vf fps=1/2,cropdetect=mode=black:reset=50,metadata=mode=print -f null - 2>&1 | awk '/crop=/ {a=$NF} END{print a}' | awk -F '=' '{print $2}')
+	rawCrop8=$(${ffmpeg} -nostdin -ss ${midPoint7} -t 10 -i "${inputFile}" -vf fps=1/2,cropdetect=mode=black:reset=50,metadata=mode=print -f null - 2>&1 | awk '/crop=/ {a=$NF} END{print a}' | awk -F '=' '{print $2}')
+	rawCrop9=$(${ffmpeg} -nostdin -ss ${endPoint} -t 10 -i "${inputFile}" -vf fps=1/2,cropdetect=mode=black:reset=50,metadata=mode=print -f null - 2>&1 | awk '/crop=/ {a=$NF} END{print a}' | awk -F '=' '{print $2}')
 
 	IFS=$'\n'
 	w1=$(echo ${rawCrop1} | awk -F ":" '{print $1}')
@@ -594,7 +610,11 @@ generateFilterParameters () {
 	w3=$(echo ${rawCrop3} | awk -F ":" '{print $1}')
 	w4=$(echo ${rawCrop4} | awk -F ":" '{print $1}')
 	w5=$(echo ${rawCrop5} | awk -F ":" '{print $1}')
-	wSort=(${w1} ${w2} ${w3} ${w4} ${w5})
+	w6=$(echo ${rawCrop6} | awk -F ":" '{print $1}')
+	w7=$(echo ${rawCrop7} | awk -F ":" '{print $1}')
+	w8=$(echo ${rawCrop8} | awk -F ":" '{print $1}')
+	w9=$(echo ${rawCrop9} | awk -F ":" '{print $1}')
+	wSort=(${w1} ${w2} ${w3} ${w4} ${w5} ${w6} ${w7} ${w8} ${w9})
 	w=$(echo "${wSort[*]}" | sort -nr | head -n1)
 
 	h1=$(echo ${rawCrop1} | awk -F ":" '{print $2}')
@@ -602,7 +622,11 @@ generateFilterParameters () {
 	h3=$(echo ${rawCrop3} | awk -F ":" '{print $2}')
 	h4=$(echo ${rawCrop4} | awk -F ":" '{print $2}')
 	h5=$(echo ${rawCrop5} | awk -F ":" '{print $2}')
-	hSort=(${h1} ${h2} ${h3} ${h4} ${h5})
+	h6=$(echo ${rawCrop6} | awk -F ":" '{print $2}')
+	h7=$(echo ${rawCrop7} | awk -F ":" '{print $2}')
+	h8=$(echo ${rawCrop8} | awk -F ":" '{print $2}')
+	h9=$(echo ${rawCrop9} | awk -F ":" '{print $2}')
+	hSort=(${h1} ${h2} ${h3} ${h4} ${h5} ${h6} ${h7} ${h8} ${h9})
 	h=$(echo "${hSort[*]}" | sort -nr | head -n1)
 
 	x1=$(echo ${rawCrop1} | awk -F ":" '{print $3}')
@@ -610,7 +634,11 @@ generateFilterParameters () {
 	x3=$(echo ${rawCrop3} | awk -F ":" '{print $3}')
 	x4=$(echo ${rawCrop4} | awk -F ":" '{print $3}')
 	x5=$(echo ${rawCrop5} | awk -F ":" '{print $3}')
-	xSort=(${x1} ${x2} ${x3} ${x4} ${x5})
+	x6=$(echo ${rawCrop6} | awk -F ":" '{print $3}')
+	x7=$(echo ${rawCrop7} | awk -F ":" '{print $3}')
+	x8=$(echo ${rawCrop8} | awk -F ":" '{print $3}')
+	x9=$(echo ${rawCrop9} | awk -F ":" '{print $3}')
+	xSort=(${x1} ${x2} ${x3} ${x4} ${x5} ${x6} ${x7} ${x8} ${x9})
 	x=$(echo "${xSort[*]}" | sort -n | head -n1)
 
 	y1=$(echo ${rawCrop1} | awk -F ":" '{print $4}')
@@ -618,7 +646,11 @@ generateFilterParameters () {
 	y3=$(echo ${rawCrop3} | awk -F ":" '{print $4}')
 	y4=$(echo ${rawCrop4} | awk -F ":" '{print $4}')
 	y5=$(echo ${rawCrop5} | awk -F ":" '{print $4}')
-	ySort=(${y1} ${y2} ${y3} ${y4} ${y5})
+	y6=$(echo ${rawCrop6} | awk -F ":" '{print $4}')
+	y7=$(echo ${rawCrop7} | awk -F ":" '{print $4}')
+	y8=$(echo ${rawCrop8} | awk -F ":" '{print $4}')
+	y9=$(echo ${rawCrop9} | awk -F ":" '{print $4}')
+	ySort=(${y1} ${y2} ${y3} ${y4} ${y5} ${y6} ${y7} ${y8} ${y9})
 	y=$(echo "${ySort[*]}" | sort -n | head -n1)
 
 	IFS=$' \t\n'
